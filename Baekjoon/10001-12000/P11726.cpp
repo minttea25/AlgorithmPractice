@@ -1,5 +1,5 @@
-// 가장 긴 증가하는 부분 수열 3
-// https://www.acmicpc.net/problem/12738
+// 2xn 타일링
+// https://www.acmicpc.net/problem/11726
 
 #include <iostream>
 #include <vector>
@@ -20,42 +20,31 @@ typedef vector<int, int> iiv;
 typedef vector<int> iv;
 typedef pair<int, int> iip;
 
-constexpr int DUMMY = -1'234'567'890;
+constexpr int DUMMY = -1;
+constexpr int MOD = 10007;
 
 int N;
-iv _input;
+ll memoi[1001];
 
-iv lMax;
+ll memoization(int n) {
+    if (n == 1) return 1;
+    if (n == 2) return 2;
 
-void LIS() {
-    lMax.push_back(DUMMY);
+    if (memoi[n] != DUMMY) return memoi[n];
 
-    FOR(i, 0, N) {
-        if (lMax.back() < _input[i]) {
-            lMax.push_back(_input[i]);
-        }
-        else {
-            lMax[lower_bound(lMax.begin(), lMax.end(), _input[i])-lMax.begin()] = _input[i];
-        }
-    }
+    return memoi[n] = (memoization(n-1) + memoization(n-2))%MOD;
 }
-
 
 int main() {
     cin.tie(NULL);
     cout.tie(NULL);
     ios_base::sync_with_stdio(0);
 
+    memset(memoi, DUMMY, sizeof(memoi));
+
     cin >> N;
-    FOR(i, 0, N) {
-        int t;
-        cin >> t;
-        _input.push_back(t);
-    }
 
-    LIS();
-
-    cout << lMax.size() - 1 << endl;
+    cout << memoization(N) << endl;
 
     return 0;
 }

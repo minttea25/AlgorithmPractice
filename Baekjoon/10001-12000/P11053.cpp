@@ -1,5 +1,5 @@
-// 가장 긴 증가하는 부분 수열 3
-// https://www.acmicpc.net/problem/12738
+// 가장 긴 증가하는 부분 수열
+// https://www.acmicpc.net/problem/11053
 
 #include <iostream>
 #include <vector>
@@ -20,10 +20,10 @@ typedef vector<int, int> iiv;
 typedef vector<int> iv;
 typedef pair<int, int> iip;
 
-constexpr int DUMMY = -1'234'567'890;
+constexpr int DUMMY = -1;
 
 int N;
-iv _input;
+int arr[1001];
 
 iv lMax;
 
@@ -31,11 +31,11 @@ void LIS() {
     lMax.push_back(DUMMY);
 
     FOR(i, 0, N) {
-        if (lMax.back() < _input[i]) {
-            lMax.push_back(_input[i]);
+        if (lMax.back() < arr[i]) {
+            lMax.push_back(arr[i]);
         }
         else {
-            lMax[lower_bound(lMax.begin(), lMax.end(), _input[i])-lMax.begin()] = _input[i];
+            lMax[lower_bound(lMax.begin(), lMax.end(), arr[i])-lMax.begin()] = arr[i];
         }
     }
 }
@@ -48,9 +48,7 @@ int main() {
 
     cin >> N;
     FOR(i, 0, N) {
-        int t;
-        cin >> t;
-        _input.push_back(t);
+        cin >> arr[i];
     }
 
     LIS();

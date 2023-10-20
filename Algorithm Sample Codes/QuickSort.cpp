@@ -1,63 +1,59 @@
 #include <iostream>
-#include <algorithm>
+#include <random>
+#include <vector>
 
 using namespace std;
 
-void quick_sort(int* arr, int start, int end) {
-    // if the length == 1
-    if (start >= end) return;
+#define PRINT(v) for(int i=0; i<v.size(); ++i) std::cout << v[i] << ' '; std::cout << '\n'
 
-    // Set pivot first value of arr
-    int pivot = start;    
 
-    int left = start + 1;
-    int right = end;
+void quickSort(vector<int>& arr, const int left, const int right) {
+    // base case
+    if (left >= right) return;
 
-    // It would reduce time to sort
-    swap(arr[left], arr[(start + end) >> 1]);
+    int pivot = left;
 
-    while(left <= right) {
-        while(left <= end && arr[left] <= arr[pivot]) left++;
+    const int size = arr.size();
 
-        while(right > start && arr[right] >= arr[pivot]) right--;
+    int l = left + 1;
+    int r = right;
 
-        if (left > right) {
-            swap(arr[right], arr[pivot]);
+    while (l <= r) {
+        while (l < size && arr[l] <= arr[pivot]) l++;
+        while (r < size && arr[r] > arr[pivot]) r--;
+
+        if (l <= r) {
+            swap(arr[l], arr[r]);
         }
         else {
-            swap(arr[left], arr[right]);
+            swap(arr[r], arr[pivot]);
         }
     }
 
-    quick_sort(arr, start, right-1);
-    quick_sort(arr, right+1, end);
-}
-
-void printArr(int* arr, int len) {
-    for(int i=0; i<len; i++) {
-        cout << arr[i] << ' ';
-    }
-    cout << endl;
+    quickSort(arr, left, r - 1);
+    quickSort(arr, r+1, right);
 }
 
 int main() {
-    int arr1[10] = { 2, 4, 1, 6, 9, 5, 5, 3, 0, 7 };
-    int arr2[10] = { 2, 4, 1, 6, 9, 5, 5, 3, 0, 7 };
+    cout.sync_with_stdio(false);
+    cin.sync_with_stdio(false);
 
-    cout << "Original array (not sorted)" << endl;
-    printArr(arr1, 10);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distribution(-100, 100);
 
-    cout << endl;
+    vector<int> v;
 
-    sort(arr1, arr1+10);
-    cout << "Sorted by sort() in <algorithm>" << endl;
-    printArr(arr1, 10);
+    for(int i=0; i<10; i++) {
+        int t = distribution(gen);
+        v.push_back(t);
+    }
 
-    cout << endl;
+    PRINT(v);
 
-    cout << "Sorted by quick_sort() of user-defined function" << endl;
-    quick_sort(arr2, 0, 9);
-    printArr(arr2, 10);
+    quickSort(v, 0, 9);
+
+    PRINT(v);
 
     return 0;
 }
