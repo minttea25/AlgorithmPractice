@@ -22,7 +22,7 @@ typedef pair<int, int> iip;
 
 const int EMPTY = 0;
 const int HOUSE = 1;
-const int CHECKED = 2;
+const int AIR = 2;
 
 iip dir[] = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
 int map[25][25];
@@ -31,7 +31,7 @@ int N;
 
 int connectComponents(const int x, const int y) {
     int count = 1;
-    map[x][y] = CHECKED;
+    map[x][y] = AIR;
     queue<iip> q;
 
     q.push({x, y});
@@ -44,7 +44,7 @@ int connectComponents(const int x, const int y) {
             int yy = node.second+d.second;
             if (xx >= N || xx < 0 || yy >= N || yy < 0) continue;
             if (map[xx][yy] == HOUSE) {
-                map[xx][yy] = CHECKED;
+                map[xx][yy] = AIR;
                 q.push({xx, yy});
                 count++;
             }
